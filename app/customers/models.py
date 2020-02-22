@@ -24,6 +24,11 @@ class Customer(Base):
         back_populates='customer',
         lazy=True
     )
+    reviews = relationship(
+        'Review',
+        back_populates='customer',
+        lazy=True
+    )
 
 
 class Address(Base):
