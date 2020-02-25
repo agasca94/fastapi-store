@@ -3,34 +3,6 @@ from sqlalchemy.orm import relationship
 from app.db.base_class import Base
 
 
-class Customer(Base):
-    __tablename__ = 'customers'
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(128), nullable=False)
-    last_name = Column(String(255), nullable=False)
-    email = Column(String(255), nullable=False)
-    password = Column(String(128), nullable=False)
-    phone_number = Column(String(128), nullable=False)
-    date_of_birth = Column(Date, nullable=False)
-
-    favorite_address_id = Column(Integer, ForeignKey('addresses.id'))
-    favorite_address = relationship(
-        'Address',
-        lazy=True
-    )
-    addresses = relationship(
-        'Address',
-        back_populates='customer',
-        lazy=True
-    )
-    reviews = relationship(
-        'Review',
-        back_populates='customer',
-        lazy=True
-    )
-
-
 class Address(Base):
     __tablename__ = 'addresses'
 
@@ -48,5 +20,36 @@ class Address(Base):
     customer = relationship(
         'Customer',
         back_populates='addresses',
+        lazy=True,
+        foreign_keys=[customer_id]
+    )
+
+
+class Customer(Base):
+    __tablename__ = 'customers'
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(128), nullable=False)
+    last_name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False)
+    password = Column(String(128), nullable=False)
+    phone_number = Column(String(128), nullable=False)
+    date_of_birth = Column(Date, nullable=False)
+
+    favorite_address_id = Column(Integer, ForeignKey('addresses.id'))
+    favorite_address = relationship(
+        'Address',
+        lazy=True,
+        foreign_keys=[favorite_address_id]
+    )
+    addresses = relationship(
+        'Address',
+        back_populates='customer',
+        lazy=True,
+        foreign_keys=[Address.customer_id]
+    )
+    reviews = relationship(
+        'Review',
+        back_populates='customer',
         lazy=True
     )

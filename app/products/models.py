@@ -30,7 +30,7 @@ class Product(Base):
 
     department_id = Column(Integer, ForeignKey('departments.id'))
     department = relationship(
-        'Product',
+        'Department',
         back_populates='products',
         lazy='joined',
         innerjoin=True
