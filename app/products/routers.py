@@ -13,29 +13,23 @@ reviews_router = APIRouter()
 
 # Departments controllers
 @departments_router.get('/', response_model=List[Department])
-def read_departments(
-    db: Session = Depends(get_db)
-):
+def read_departments(db: Session = Depends(get_db)):
     departments = department_repo.get_paginated(db)
     return departments
 
 
 @departments_router.get(
-    '/{department_id}/products',
-    response_model=List[Product]
+    '/{department_id}/products', response_model=List[Product]
 )
 def read_products_from_departments(
-    department_id: int,
-    db: Session = Depends(get_db)
+    department_id: int, db: Session = Depends(get_db)
 ):
     products = department_repo.get_products(db, department_id)
     return products
 
 
 @departments_router.post('/', response_model=Department)
-def create_department(
-    db: Session = Depends(get_db)
-):
+def create_department(db: Session = Depends(get_db)):
     return {'id': 1}
 
 
@@ -57,10 +51,7 @@ def read_products(db: Session = Depends(get_db)):
 
 
 @products_router.get('/{product_id}', response_model=Product)
-def get_product(
-    product_id: int,
-    db: Session = Depends(get_db)
-):
+def get_product(product_id: int, db: Session = Depends(get_db)):
     product = product_repo.get(db, product_id)
     return product
 
@@ -82,10 +73,7 @@ def delete_product(product_id: int):
 
 # Reviews controllers
 @reviews_router.get('/', response_model=List[Review])
-def read_reviews(
-    product_id: int,
-    db: Session = Depends(get_db)
-):
+def read_reviews(product_id: int, db: Session = Depends(get_db)):
     reviews = product_repo.get_reviews(db, product_id)
     return reviews
 

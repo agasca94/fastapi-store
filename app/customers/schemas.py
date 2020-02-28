@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class Customer(BaseModel):
-    id: int
+    id: int = None
     name: str
     last_name: str
     email: str
@@ -16,6 +16,10 @@ class Customer(BaseModel):
         orm_mode = True
 
 
+class CustomerCreate(Customer):
+    password: str
+
+
 class Address(BaseModel):
     id: int = None
     country: str
@@ -25,7 +29,7 @@ class Address(BaseModel):
     street_number: str
     street_name: str
     phone_number: str
-    extra_details: str
+    extra_details: Optional[str]
 
     class Config:
         orm_mode = True
