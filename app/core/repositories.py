@@ -28,9 +28,11 @@ class CRUDRepository(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
         return sess.query(self.model).all()
 
-    def create(self, sess: Session, *, obj: CreateSchemaType) -> ModelType:
+    def create(
+        self, sess: Session, *, obj: CreateSchemaType, **kwargs
+    ) -> ModelType:
         data = jsonable_encoder(obj)
-        instance = self.model(**data)
+        instance = self.model(**data, **kwargs)
         sess.add(instance)
         sess.commit()
         sess.refresh(instance)
@@ -52,7 +54,7 @@ class CRUDRepository(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
         return instance
 
-    def remove(self, sess: Session, *, _id: int) -> ModelType:
+    def remove(self, sess: Session, _id: int) -> ModelType:
         instance = sess.query(self.model).get(_id)
         sess.delete(instance)
         sess.commit()
